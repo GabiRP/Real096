@@ -13,7 +13,7 @@ namespace Real096
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
-        public float TiempoParaCalmarse { get; set; } = 10;
+        public float CalmTime { get; set; } = 10;
     }
     public class Plugin : Plugin<Config>
     {
@@ -22,7 +22,7 @@ namespace Real096
         public override string Author => "xRoier";
         public EventHandlers EventHandlers;
         public override Version Version { get; } = new Version(2, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 0, 10);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 3);
         public override void OnEnabled()
         {
             base.OnEnabled();
@@ -70,7 +70,7 @@ namespace Real096
         }
         IEnumerator<float> Calm096(PlayableScps.Scp096 scp)
         {
-            yield return Timing.WaitForSeconds(plugin.Config.TiempoParaCalmarse);
+            yield return Timing.WaitForSeconds(plugin.Config.CalmTime);
             if(scp.Enraged && !scp._targets.Any())
             {
                 scp.PlayerState = PlayableScps.Scp096PlayerState.Calming;

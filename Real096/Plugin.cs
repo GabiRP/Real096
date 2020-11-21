@@ -27,31 +27,24 @@ namespace Real096
         {
             base.OnEnabled();
             EventHandlers = new EventHandlers(this);
-            Exiled.Events.Handlers.Scp096.CalmingDown += EventHandlers.OnCalming;
+
             Exiled.Events.Handlers.Player.Dying += EventHandlers.OnPlayerDeath;
         }
         public override void OnDisabled()
         {
             base.OnDisabled();
-            Exiled.Events.Handlers.Scp096.CalmingDown -= EventHandlers.OnCalming;
+
             Exiled.Events.Handlers.Player.Dying -= EventHandlers.OnPlayerDeath;
             EventHandlers = null;
         }
-        public override void OnReloaded() { }
+        public override void OnReloaded() { } 
         
     }
     public class EventHandlers
     {
         private Plugin plugin;
         public EventHandlers(Plugin plugin) { this.plugin = plugin; }
-        internal void OnCalming(CalmingDownEventArgs ev)
-        {
-            if (ev.Scp096._targets.Any())
-            {
-                ev.IsAllowed = false;
-                ev.Scp096.PlayerState = PlayableScps.Scp096PlayerState.Enraged;
-            }
-        }
+        
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
@@ -62,20 +55,9 @@ namespace Real096
                 {
                     ev.IsAllowed = false;
                 }
-                if (s096.Enraged && !s096._targets.Any())
-                {
-                    Timing.RunCoroutine(Calm096(s096));
-                }
+                
             }
         }
-        IEnumerator<float> Calm096(PlayableScps.Scp096 scp)
-        {
-            yield return Timing.WaitForSeconds(plugin.Config.CalmTime);
-            if(scp.Enraged && !scp._targets.Any())
-            {
-                scp.PlayerState = PlayableScps.Scp096PlayerState.Calming;
-            }
-            yield break;
-        }
+        
     }
 }
